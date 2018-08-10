@@ -11,6 +11,8 @@ example/
 *.m4v
 *.mov
 *.opendb
+*.bak
+*.csv
 
 *.db
 

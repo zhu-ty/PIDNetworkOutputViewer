@@ -103,7 +103,7 @@
             // 
             this.textBox1.Location = new System.Drawing.Point(16, 85);
             this.textBox1.Name = "textBox1";
-            this.textBox1.Size = new System.Drawing.Size(606, 21);
+            this.textBox1.Size = new System.Drawing.Size(1057, 21);
             this.textBox1.TabIndex = 4;
             // 
             // chart1
@@ -123,7 +123,7 @@
             series1.Legend = "Legend1";
             series1.Name = "Series1";
             this.chart1.Series.Add(series1);
-            this.chart1.Size = new System.Drawing.Size(300, 300);
+            this.chart1.Size = new System.Drawing.Size(490, 300);
             this.chart1.TabIndex = 5;
             this.chart1.Text = "chart1";
             title1.Name = "Title1";
@@ -139,14 +139,14 @@
             legend2.Enabled = false;
             legend2.Name = "Legend1";
             this.chart2.Legends.Add(legend2);
-            this.chart2.Location = new System.Drawing.Point(322, 112);
+            this.chart2.Location = new System.Drawing.Point(512, 112);
             this.chart2.Name = "chart2";
             series2.ChartArea = "ChartArea1";
             series2.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Line;
             series2.Legend = "Legend1";
             series2.Name = "Series1";
             this.chart2.Series.Add(series2);
-            this.chart2.Size = new System.Drawing.Size(300, 300);
+            this.chart2.Size = new System.Drawing.Size(561, 300);
             this.chart2.TabIndex = 6;
             this.chart2.Text = "chart2";
             title2.Name = "Title1";
@@ -169,7 +169,7 @@
             series3.Legend = "Legend1";
             series3.Name = "Series1";
             this.chart3.Series.Add(series3);
-            this.chart3.Size = new System.Drawing.Size(300, 300);
+            this.chart3.Size = new System.Drawing.Size(490, 300);
             this.chart3.TabIndex = 7;
             this.chart3.Text = "chart3";
             title3.Name = "Title1";
@@ -185,14 +185,14 @@
             legend4.Enabled = false;
             legend4.Name = "Legend1";
             this.chart4.Legends.Add(legend4);
-            this.chart4.Location = new System.Drawing.Point(322, 418);
+            this.chart4.Location = new System.Drawing.Point(512, 418);
             this.chart4.Name = "chart4";
             series4.ChartArea = "ChartArea1";
             series4.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Line;
             series4.Legend = "Legend1";
             series4.Name = "Series1";
             this.chart4.Series.Add(series4);
-            this.chart4.Size = new System.Drawing.Size(300, 300);
+            this.chart4.Size = new System.Drawing.Size(561, 300);
             this.chart4.TabIndex = 8;
             this.chart4.Text = "chart4";
             title4.Name = "Title1";
@@ -202,7 +202,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(630, 726);
+            this.ClientSize = new System.Drawing.Size(1085, 730);
             this.Controls.Add(this.chart4);
             this.Controls.Add(this.chart3);
             this.Controls.Add(this.chart2);

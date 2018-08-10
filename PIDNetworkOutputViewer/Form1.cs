@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -79,7 +80,7 @@ namespace PIDNetworkOutputViewer
         {
             List<string> data_string_raw = new List<string>(textBox1.Lines);
             List<data_block> datas = new List<data_block>();
-            for(int i = data_string_raw.Count - 1; i >= 0;i--)
+            for (int i = data_string_raw.Count - 1; i >= 0; i--)
             {
                 string str = data_string_raw[i];
                 str = str.Replace(" ", "");
@@ -105,6 +106,40 @@ namespace PIDNetworkOutputViewer
                 str = get_list(str, db.val_accf);
                 datas.Add(db);
             }
+            if(File.Exists("excel.csv"))
+            {
+                int k = 0;
+                while (File.Exists("excel.csv." + k + ".bak")) k++;
+                File.Move("excel.csv", "excel.csv." + k + ".bak");
+            }
+            StreamWriter sw = new StreamWriter("./excel.csv");
+            
+            for (int i = 0; i < datas.Count; i++)
+            {
+                sw.Write(datas[i].learning_rate + "," + datas[i].P + "," + datas[i].I + "," + datas[i].D + ", ,");
+                for(int j = 0;j < datas[i].train_lossf.Count;j++)
+                {
+                    sw.Write(datas[i].train_lossf[j] + ",");
+                }
+                sw.Write(" ,");
+                for (int j = 0; j < datas[i].val_lossf.Count; j++)
+                {
+                    sw.Write(datas[i].val_lossf[j] + ",");
+                }
+                sw.Write(" ,");
+                for (int j = 0; j < datas[i].val_lossf.Count; j++)
+                {
+                    sw.Write(datas[i].val_lossf[j] + ",");
+                }
+                sw.Write(" ,");
+                for (int j = 0; j < datas[i].val_accf.Count; j++)
+                {
+                    sw.Write(datas[i].val_accf[j] + ",");
+                }
+                sw.Write(" \r\n");
+            }
+            sw.Close();
+
             for (int i = 0; i < datas.Count; i++)
             {
                 Table tb = new Table();
@@ -119,7 +154,7 @@ namespace PIDNetworkOutputViewer
                     datas[i].D.ToString("G10");
 
                 tb.chart1.Titles[0].Text = "train_lossf";
-                for(int j = 0; j < datas[i].train_lossf.Count;j++)
+                for (int j = 0; j < datas[i].train_lossf.Count; j++)
                 {
                     tb.chart1.Series[0].Points.AddXY(j, datas[i].train_lossf[j]);
                 }
