@@ -139,54 +139,60 @@ namespace PIDNetworkOutputViewer
                 sw.Write(" \r\n");
             }
             sw.Close();
-
-            for (int i = 0; i < datas.Count; i++)
+            if (checkBox1.Checked)
             {
-                Table tb = new Table();
-                tb.label1.Text = "learning_rate = " + datas[i].learning_rate.ToString("G10");
-                tb.label2.Text = "P = " + datas[i].P.ToString("G10");
-                tb.label3.Text = "I = " + datas[i].I.ToString("G10");
-                tb.label4.Text = "D = " + datas[i].D.ToString("G10");
-
-                tb.textBox1.Text = datas[i].learning_rate.ToString("G10") + ", " +
-                    datas[i].P.ToString("G10") + ", " +
-                    datas[i].I.ToString("G10") + ", " +
-                    datas[i].D.ToString("G10");
-
-                tb.chart1.Titles[0].Text = "train_lossf";
-                for (int j = 0; j < datas[i].train_lossf.Count; j++)
+                for (int i = 0; i < datas.Count; i++)
                 {
-                    tb.chart1.Series[0].Points.AddXY(j, datas[i].train_lossf[j]);
-                }
-                tb.chart1.Series[0].Points[0].Label = datas[i].train_lossf[0].ToString("G6");
-                tb.chart1.Series[0].Points[datas[i].train_lossf.Count - 1].Label = datas[i].train_lossf[datas[i].train_lossf.Count - 1].ToString("G6");
+                    Table tb = new Table();
+                    tb.label1.Text = "learning_rate = " + datas[i].learning_rate.ToString("G10");
+                    tb.label2.Text = "P = " + datas[i].P.ToString("G10");
+                    tb.label3.Text = "I = " + datas[i].I.ToString("G10");
+                    tb.label4.Text = "D = " + datas[i].D.ToString("G10");
 
-                tb.chart2.Titles[0].Text = "val_lossf";
-                for (int j = 0; j < datas[i].val_lossf.Count; j++)
-                {
-                    tb.chart2.Series[0].Points.AddXY(j, datas[i].val_lossf[j]);
-                }
-                tb.chart2.Series[0].Points[0].Label = datas[i].val_lossf[0].ToString("G6");
-                tb.chart2.Series[0].Points[datas[i].val_lossf.Count - 1].Label = datas[i].val_lossf[datas[i].val_lossf.Count - 1].ToString("G6");
+                    tb.textBox1.Text = datas[i].learning_rate.ToString("G10") + ", " +
+                        datas[i].P.ToString("G10") + ", " +
+                        datas[i].I.ToString("G10") + ", " +
+                        datas[i].D.ToString("G10");
 
-                tb.chart3.Titles[0].Text = "train_accf";
-                for (int j = 0; j < datas[i].train_accf.Count; j++)
-                {
-                    tb.chart3.Series[0].Points.AddXY(j, datas[i].train_accf[j]);
-                }
-                tb.chart3.Series[0].Points[0].Label = datas[i].train_accf[0].ToString("G6");
-                tb.chart3.Series[0].Points[datas[i].train_accf.Count - 1].Label = datas[i].train_accf[datas[i].train_accf.Count - 1].ToString("G6");
+                    tb.chart1.Titles[0].Text = "train_lossf";
+                    for (int j = 0; j < datas[i].train_lossf.Count; j++)
+                    {
+                        tb.chart1.Series[0].Points.AddXY(j, datas[i].train_lossf[j]);
+                    }
+                    tb.chart1.Series[0].Points[0].Label = datas[i].train_lossf[0].ToString("G6");
+                    tb.chart1.Series[0].Points[datas[i].train_lossf.Count - 1].Label = datas[i].train_lossf[datas[i].train_lossf.Count - 1].ToString("G6");
 
-                tb.chart4.Titles[0].Text = "val_accf";
-                for (int j = 0; j < datas[i].val_accf.Count; j++)
-                {
-                    tb.chart4.Series[0].Points.AddXY(j, datas[i].val_accf[j]);
-                }
-                tb.chart4.Series[0].Points[0].Label = datas[i].val_accf[0].ToString("G6");
-                tb.chart4.Series[0].Points[datas[i].val_accf.Count - 1].Label = datas[i].val_accf[datas[i].val_accf.Count - 1].ToString("G6");
+                    tb.chart2.Titles[0].Text = "val_lossf";
+                    for (int j = 0; j < datas[i].val_lossf.Count; j++)
+                    {
+                        tb.chart2.Series[0].Points.AddXY(j, datas[i].val_lossf[j]);
+                    }
+                    tb.chart2.Series[0].Points[0].Label = datas[i].val_lossf[0].ToString("G6");
+                    tb.chart2.Series[0].Points[datas[i].val_lossf.Count - 1].Label = datas[i].val_lossf[datas[i].val_lossf.Count - 1].ToString("G6");
 
-                //tb.chart1.Series.Add()
-                tb.Show();
+                    tb.chart3.Titles[0].Text = "train_accf";
+                    for (int j = 0; j < datas[i].train_accf.Count; j++)
+                    {
+                        tb.chart3.Series[0].Points.AddXY(j, datas[i].train_accf[j]);
+                    }
+                    tb.chart3.Series[0].Points[0].Label = datas[i].train_accf[0].ToString("G6");
+                    tb.chart3.Series[0].Points[datas[i].train_accf.Count - 1].Label = datas[i].train_accf[datas[i].train_accf.Count - 1].ToString("G6");
+
+                    tb.chart4.Titles[0].Text = "val_accf";
+                    for (int j = 0; j < datas[i].val_accf.Count; j++)
+                    {
+                        tb.chart4.Series[0].Points.AddXY(j, datas[i].val_accf[j]);
+                    }
+                    tb.chart4.Series[0].Points[0].Label = datas[i].val_accf[0].ToString("G6");
+                    tb.chart4.Series[0].Points[datas[i].val_accf.Count - 1].Label = datas[i].val_accf[datas[i].val_accf.Count - 1].ToString("G6");
+
+                    //tb.chart1.Series.Add()
+                    tb.Show();
+                }
+            }
+            else
+            {
+                MessageBox.Show("Done!");
             }
             return;
         }
