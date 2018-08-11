@@ -16,7 +16,7 @@ namespace PIDNetworkOutputViewer
     {
         private class data_block
         {
-            public double learning_rate, P, I, D;
+            public double learning_rate, P, I, D, p1, p2;
             public List<double> train_lossf, val_lossf, train_accf, val_accf;
             public data_block()
             {
@@ -100,6 +100,8 @@ namespace PIDNetworkOutputViewer
                 db.P = double.Parse(split_space[1]);
                 db.I = double.Parse(split_space[2]);
                 db.D = double.Parse(split_space[3]);
+                db.p1 = double.Parse(split_space[4]);
+                db.p2 = double.Parse(split_space[5]);
                 str = get_list(str, db.train_lossf);
                 str = get_list(str, db.val_lossf);
                 str = get_list(str, db.train_accf);
@@ -116,7 +118,8 @@ namespace PIDNetworkOutputViewer
             
             for (int i = 0; i < datas.Count; i++)
             {
-                sw.Write(datas[i].learning_rate + "," + datas[i].P + "," + datas[i].I + "," + datas[i].D + ", ,");
+                sw.Write(datas[i].learning_rate + "," + datas[i].P + "," + datas[i].I + "," + datas[i].D
+                    +"," + datas[i].p1 +"," + datas[i].p2 + ", ,");
                 for(int j = 0;j < datas[i].train_lossf.Count;j++)
                 {
                     sw.Write(datas[i].train_lossf[j] + ",");
