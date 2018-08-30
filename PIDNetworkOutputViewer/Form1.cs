@@ -11,7 +11,6 @@ using System.Windows.Forms;
 
 namespace PIDNetworkOutputViewer
 {
-    //learning_rate P I D train_lossf val_lossf train_accf val_accf
     public partial class Form1 : Form
     {
         private class data_block
@@ -29,15 +28,19 @@ namespace PIDNetworkOutputViewer
                 train_accf = new List<double>();
                 val_accf = new List<double>();
             }
-            //public System.Windows.Forms.DataVisualization.Charting.Series this[int key]
-            //{
-            //    get
-            //    {
-            //        System.Windows.Forms.DataVisualization.Charting.Series sr = new System.Windows.Forms.DataVisualization.Charting.Series();
-                    
-            //    }
-            //}
         }
+
+        private class data_block_v2
+        {
+            public List<double> double_datas;
+            public List<List<double>> double_list_datas;
+            public data_block_v2()
+            {
+                double_datas = new List<double>();
+                double_list_datas = new List<List<double>>();
+            }
+        }
+
         /// <summary>
         /// 字符串中多个连续空格转为一个空格，去除收尾空格
         /// </summary>
@@ -79,7 +82,7 @@ namespace PIDNetworkOutputViewer
         private void button1_Click(object sender, EventArgs e)
         {
             List<string> data_string_raw = new List<string>(textBox1.Lines);
-            List<data_block> datas = new List<data_block>();
+            List<data_block_v2> datas = new List<data_block_v2>();
             for (int i = data_string_raw.Count - 1; i >= 0; i--)
             {
                 string str = data_string_raw[i];
@@ -94,18 +97,26 @@ namespace PIDNetworkOutputViewer
             {
                 string str = data_string_raw[i];
                 str = MergeSpace(str);
+                str = str.Trim();
+                str = str.Replace(", ", ",");
+                str = str.Replace(" ,", ",");
                 string[] split_space = str.Split(' ');
-                data_block db = new data_block();
-                db.learning_rate = double.Parse(split_space[0]);
-                db.P = double.Parse(split_space[1]);
-                db.I = double.Parse(split_space[2]);
-                db.D = double.Parse(split_space[3]);
-                db.p1 = double.Parse(split_space[4]);
-                db.p2 = double.Parse(split_space[5]);
-                str = get_list(str, db.train_lossf);
-                str = get_list(str, db.val_lossf);
-                str = get_list(str, db.train_accf);
-                str = get_list(str, db.val_accf);
+                data_block_v2 db = new data_block_v2();
+
+                for(int j = 0;j < split_space.Length;j++)
+                {
+                    split_space[j] = split_space[j].Trim();
+                    if (split_space[j][0] != '[')
+                    {
+                        db.double_datas.Add(double.Parse(split_space[j]));
+                    }
+                    else
+                    {
+                        List<double> list = new List<double>();
+                        get_list(split_space[j], list);
+                        db.double_list_datas.Add(list);
+                    }
+                }
                 datas.Add(db);
             }
             if(File.Exists("excel.csv"))
@@ -118,86 +129,87 @@ namespace PIDNetworkOutputViewer
             
             for (int i = 0; i < datas.Count; i++)
             {
-                sw.Write(datas[i].learning_rate + "," + datas[i].P + "," + datas[i].I + "," + datas[i].D
-                    +"," + datas[i].p1 +"," + datas[i].p2 + ", ,");
-                for(int j = 0;j < datas[i].train_lossf.Count;j++)
+                for(int j = 0; j < datas[i].double_datas.Count;j++)
                 {
-                    sw.Write(datas[i].train_lossf[j] + ",");
+                    sw.Write(datas[i].double_datas[j] + ",");
                 }
                 sw.Write(" ,");
-                for (int j = 0; j < datas[i].val_lossf.Count; j++)
+                for (int j = 0; j < datas[i].double_list_datas.Count; j++)
                 {
-                    sw.Write(datas[i].val_lossf[j] + ",");
-                }
-                sw.Write(" ,");
-                for (int j = 0; j < datas[i].val_lossf.Count; j++)
-                {
-                    sw.Write(datas[i].val_lossf[j] + ",");
-                }
-                sw.Write(" ,");
-                for (int j = 0; j < datas[i].val_accf.Count; j++)
-                {
-                    sw.Write(datas[i].val_accf[j] + ",");
+                    for(int k = 0; k < datas[i].double_list_datas[j].Count;k++)
+                    {
+                        sw.Write(datas[i].double_list_datas[j][k] + ",");
+                    }
+                    sw.Write(" ,");
                 }
                 sw.Write(" \r\n");
             }
             sw.Close();
             if (checkBox1.Checked)
             {
-                for (int i = 0; i < datas.Count; i++)
-                {
-                    Table tb = new Table();
-                    tb.label1.Text = "learning_rate = " + datas[i].learning_rate.ToString("G10");
-                    tb.label2.Text = "P = " + datas[i].P.ToString("G10");
-                    tb.label3.Text = "I = " + datas[i].I.ToString("G10");
-                    tb.label4.Text = "D = " + datas[i].D.ToString("G10");
+                //for (int i = 0; i < datas.Count; i++)
+                //{
+                //    Table tb = new Table();
+                //    tb.label1.Text = "learning_rate = " + datas[i].learning_rate.ToString("G10");
+                //    tb.label2.Text = "P = " + datas[i].P.ToString("G10");
+                //    tb.label3.Text = "I = " + datas[i].I.ToString("G10");
+                //    tb.label4.Text = "D = " + datas[i].D.ToString("G10");
 
-                    tb.textBox1.Text = datas[i].learning_rate.ToString("G10") + ", " +
-                        datas[i].P.ToString("G10") + ", " +
-                        datas[i].I.ToString("G10") + ", " +
-                        datas[i].D.ToString("G10");
+                //    tb.textBox1.Text = datas[i].learning_rate.ToString("G10") + ", " +
+                //        datas[i].P.ToString("G10") + ", " +
+                //        datas[i].I.ToString("G10") + ", " +
+                //        datas[i].D.ToString("G10");
 
-                    tb.chart1.Titles[0].Text = "train_lossf";
-                    for (int j = 0; j < datas[i].train_lossf.Count; j++)
-                    {
-                        tb.chart1.Series[0].Points.AddXY(j, datas[i].train_lossf[j]);
-                    }
-                    tb.chart1.Series[0].Points[0].Label = datas[i].train_lossf[0].ToString("G6");
-                    tb.chart1.Series[0].Points[datas[i].train_lossf.Count - 1].Label = datas[i].train_lossf[datas[i].train_lossf.Count - 1].ToString("G6");
+                //    tb.chart1.Titles[0].Text = "train_lossf";
+                //    for (int j = 0; j < datas[i].train_lossf.Count; j++)
+                //    {
+                //        tb.chart1.Series[0].Points.AddXY(j, datas[i].train_lossf[j]);
+                //    }
+                //    tb.chart1.Series[0].Points[0].Label = datas[i].train_lossf[0].ToString("G6");
+                //    tb.chart1.Series[0].Points[datas[i].train_lossf.Count - 1].Label = datas[i].train_lossf[datas[i].train_lossf.Count - 1].ToString("G6");
 
-                    tb.chart2.Titles[0].Text = "val_lossf";
-                    for (int j = 0; j < datas[i].val_lossf.Count; j++)
-                    {
-                        tb.chart2.Series[0].Points.AddXY(j, datas[i].val_lossf[j]);
-                    }
-                    tb.chart2.Series[0].Points[0].Label = datas[i].val_lossf[0].ToString("G6");
-                    tb.chart2.Series[0].Points[datas[i].val_lossf.Count - 1].Label = datas[i].val_lossf[datas[i].val_lossf.Count - 1].ToString("G6");
+                //    tb.chart2.Titles[0].Text = "val_lossf";
+                //    for (int j = 0; j < datas[i].val_lossf.Count; j++)
+                //    {
+                //        tb.chart2.Series[0].Points.AddXY(j, datas[i].val_lossf[j]);
+                //    }
+                //    tb.chart2.Series[0].Points[0].Label = datas[i].val_lossf[0].ToString("G6");
+                //    tb.chart2.Series[0].Points[datas[i].val_lossf.Count - 1].Label = datas[i].val_lossf[datas[i].val_lossf.Count - 1].ToString("G6");
 
-                    tb.chart3.Titles[0].Text = "train_accf";
-                    for (int j = 0; j < datas[i].train_accf.Count; j++)
-                    {
-                        tb.chart3.Series[0].Points.AddXY(j, datas[i].train_accf[j]);
-                    }
-                    tb.chart3.Series[0].Points[0].Label = datas[i].train_accf[0].ToString("G6");
-                    tb.chart3.Series[0].Points[datas[i].train_accf.Count - 1].Label = datas[i].train_accf[datas[i].train_accf.Count - 1].ToString("G6");
+                //    tb.chart3.Titles[0].Text = "train_accf";
+                //    for (int j = 0; j < datas[i].train_accf.Count; j++)
+                //    {
+                //        tb.chart3.Series[0].Points.AddXY(j, datas[i].train_accf[j]);
+                //    }
+                //    tb.chart3.Series[0].Points[0].Label = datas[i].train_accf[0].ToString("G6");
+                //    tb.chart3.Series[0].Points[datas[i].train_accf.Count - 1].Label = datas[i].train_accf[datas[i].train_accf.Count - 1].ToString("G6");
 
-                    tb.chart4.Titles[0].Text = "val_accf";
-                    for (int j = 0; j < datas[i].val_accf.Count; j++)
-                    {
-                        tb.chart4.Series[0].Points.AddXY(j, datas[i].val_accf[j]);
-                    }
-                    tb.chart4.Series[0].Points[0].Label = datas[i].val_accf[0].ToString("G6");
-                    tb.chart4.Series[0].Points[datas[i].val_accf.Count - 1].Label = datas[i].val_accf[datas[i].val_accf.Count - 1].ToString("G6");
+                //    tb.chart4.Titles[0].Text = "val_accf";
+                //    for (int j = 0; j < datas[i].val_accf.Count; j++)
+                //    {
+                //        tb.chart4.Series[0].Points.AddXY(j, datas[i].val_accf[j]);
+                //    }
+                //    tb.chart4.Series[0].Points[0].Label = datas[i].val_accf[0].ToString("G6");
+                //    tb.chart4.Series[0].Points[datas[i].val_accf.Count - 1].Label = datas[i].val_accf[datas[i].val_accf.Count - 1].ToString("G6");
 
-                    //tb.chart1.Series.Add()
-                    tb.Show();
-                }
+                //    //tb.chart1.Series.Add()
+                //    tb.Show();
+                //}
             }
             else
             {
                 MessageBox.Show("Done!");
             }
             return;
+        }
+
+        private void checkBox1_CheckedChanged(object sender, EventArgs e)
+        {
+            if(checkBox1.Checked)
+            {
+                MessageBox.Show("本版本暂不支持画图，请取消勾选此框");
+            }
+            checkBox1.Checked = false;
         }
     }
 }
