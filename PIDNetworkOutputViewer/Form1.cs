@@ -117,7 +117,7 @@ namespace PIDNetworkOutputViewer
                         db.double_list_datas.Add(list);
                     }
                 }
-                datas.Add(db);
+                datas.Insert(0,db);
             }
             if(File.Exists("excel.csv"))
             {
@@ -126,21 +126,27 @@ namespace PIDNetworkOutputViewer
                 File.Move("excel.csv", "excel.csv." + k + ".bak");
             }
             StreamWriter sw = new StreamWriter("./excel.csv");
-            
-            for (int i = 0; i < datas.Count; i++)
+
+            //output
+            for (int i = 0; i < datas.Count; i++) //每行数据
             {
-                for(int j = 0; j < datas[i].double_datas.Count;j++)
+                for(int j = 0; j < datas[i].double_datas.Count;j++) //每行数据的参数
                 {
                     sw.Write(datas[i].double_datas[j] + ",");
                 }
-                sw.Write(" ,");
-                for (int j = 0; j < datas[i].double_list_datas.Count; j++)
+                sw.Write(" \r\n");
+                for (int j = 0; j < datas[i].double_list_datas.Count; j++)//每行数据的每个曲线
                 {
-                    for(int k = 0; k < datas[i].double_list_datas[j].Count;k++)
+                    for (int k = 0; k < datas[i].double_datas.Count; k++) //每行数据的参数
+                    {
+                        sw.Write(",");
+                    }
+
+                        for (int k = 0; k < datas[i].double_list_datas[j].Count;k++)//每个曲线的每个值
                     {
                         sw.Write(datas[i].double_list_datas[j][k] + ",");
                     }
-                    sw.Write(" ,");
+                    sw.Write(" \r\n");
                 }
                 sw.Write(" \r\n");
             }
